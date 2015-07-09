@@ -4,6 +4,8 @@ using System.Collections;
 public class PlayerShoot : MonoBehaviour {
 
 	public GameObject bulletHolePrefab;
+	public GameObject muzzleFlashPrefab;
+	public GameObject bulletShellPrefab;
 	public float fireRate = .1f;
 
 	bool holdFire = false;
@@ -26,12 +28,15 @@ public class PlayerShoot : MonoBehaviour {
 	IEnumerator Fire () {
 		holdFire = true;
 
+		Destroy (Instantiate (muzzleFlashPrefab, gunTop.position, Quaternion.FromToRotation (Vector3.forward, gunTop.forward)), .5f);
+		Destroy (Instantiate (bulletShellPrefab, gunTop.position, Quaternion.identity), 2f);
+
 		RaycastHit hit = new RaycastHit ();
 		Ray ray = new Ray (gunTop.position, gunTop.forward);
 
 		if (Physics.Raycast (ray, out hit, 100f)) {
 			if (hit.collider.tag == "Wall" || hit.collider.tag == "Ground") {
-				Instantiate (bulletHolePrefab, hit.point, Quaternion.FromToRotation (Vector3.forward, hit.normal));
+				Destroy (Instantiate (bulletHolePrefab, hit.point, Quaternion.FromToRotation (hit.collider.transform.forward, hit.normal)), 2f);
 			}
 		}
 
