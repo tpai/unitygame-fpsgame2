@@ -3,6 +3,9 @@ using System.Collections;
 
 public class PlayerShoot : MonoBehaviour {
 
+	public GameObject bulletHolePrefab;
+	public float fireRate = .1f;
+
 	bool holdFire = false;
 	Transform gunTop;
 
@@ -22,7 +25,17 @@ public class PlayerShoot : MonoBehaviour {
 
 	IEnumerator Fire () {
 		holdFire = true;
-		yield return new WaitForSeconds (.5f);
+
+		RaycastHit hit = new RaycastHit ();
+		Ray ray = new Ray (gunTop.position, gunTop.forward);
+
+		if (Physics.Raycast (ray, out hit, 100f)) {
+			if (hit.collider.tag == "Wall" || hit.collider.tag == "Ground") {
+				Instantiate (bulletHolePrefab, hit.point, Quaternion.FromToRotation (Vector3.forward, hit.normal));
+			}
+		}
+
+		yield return new WaitForSeconds (fireRate);
 		holdFire = false;
 	}
 }
