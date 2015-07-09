@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlayerShoot : MonoBehaviour {
 
+	bool holdFire = false;
 	Transform gunTop;
 
 	void Start () {
@@ -11,10 +12,17 @@ public class PlayerShoot : MonoBehaviour {
 	}
 	
 	void Update () {
-		Debug.DrawRay (
-			gunTop.position,
-			gunTop.forward * 100f,
-			Color.green
-		);
+
+		if (!holdFire && Input.GetButton ("Fire1")) {
+			StartCoroutine ("Fire");
+		}
+
+		Debug.DrawRay (gunTop.position, gunTop.forward * 100f, Color.green);
+	}
+
+	IEnumerator Fire () {
+		holdFire = true;
+		yield return new WaitForSeconds (.5f);
+		holdFire = false;
 	}
 }
