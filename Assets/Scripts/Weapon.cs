@@ -26,7 +26,8 @@ public class Weapon : MonoBehaviour {
 		GetComponent<WeaponSound> ().PlaySound ("Bullet");
 		
 		Destroy (Instantiate (muzzleFlashPrefab, gunTop.position, Quaternion.FromToRotation (Vector3.forward, gunTop.forward)), .5f);
-		Destroy (Instantiate (bulletShellPrefab, gunTop.position, Quaternion.identity), 2f);
+		if (bulletShellPrefab != null)
+			Destroy (Instantiate (bulletShellPrefab, gunTop.position, Quaternion.identity), 2f);
 		
 		RaycastHit hit = new RaycastHit ();
 		Ray ray = new Ray (gunTop.position, gunTop.forward);
