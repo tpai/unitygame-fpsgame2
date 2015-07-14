@@ -13,6 +13,10 @@ public class PlayerShoot : MonoBehaviour {
 		if (!holdFire && Input.GetButton ("Fire1")) {
 			StartCoroutine ("Fire");
 		}
+
+		if (Input.GetKeyDown (KeyCode.R)) {
+			GetComponentInChildren<Weapon> ().Reload ();
+		}
 	}
 
 	IEnumerator Fire () {
