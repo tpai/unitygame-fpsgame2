@@ -36,6 +36,10 @@ public class Weapon : MonoBehaviour {
 			if (hit.collider.tag == "Wall" || hit.collider.tag == "Ground") {
 				Destroy (Instantiate (bulletHitPrefab, hit.point, Quaternion.FromToRotation (hit.collider.transform.forward, hit.normal)), 2f);
 			}
+
+			if (hit.collider.tag == "Enemy") {
+				hit.collider.SendMessage ("Broken", hit.point);
+			}
 		}
 	}
 

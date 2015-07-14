@@ -9,7 +9,6 @@ public class BreakableObject : MonoBehaviour {
 	void Broken (Vector3 point) {
 
 		GetComponent<AudioSource> ().Play ();
-		transform.Find ("Barrel").GetComponent<MeshRenderer> ().enabled = false;
 
 		for (int i=1;i<transform.childCount;i++) {
 			transform.GetChild(i).gameObject.GetComponent<Rigidbody>().useGravity = true;
