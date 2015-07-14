@@ -4,6 +4,7 @@ using System.Collections;
 public class PlayerShoot : MonoBehaviour {
 
 	bool holdFire = false;
+	bool isReloading = false;
 
 	void Start () {
 		Cursor.visible = false;
@@ -14,9 +15,15 @@ public class PlayerShoot : MonoBehaviour {
 			StartCoroutine ("Fire");
 		}
 
-		if (Input.GetKeyDown (KeyCode.R)) {
+		if (!isReloading && Input.GetKeyDown (KeyCode.R)) {
+			isReloading = true;
 			GetComponentInChildren<Weapon> ().Reload ();
+			Invoke ("ReloadComplete", 1.5f);
 		}
+	}
+
+	public void ReloadComplete () {
+		isReloading = false;
 	}
 
 	IEnumerator Fire () {
