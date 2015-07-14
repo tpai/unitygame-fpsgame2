@@ -3,15 +3,29 @@ using System.Collections;
 
 public class Backpack : MonoBehaviour {
 
+	Transform weapon;
+
+	void Start () {
+		weapon = transform.Find ("Character");
+		SwitchWeapon (3);
+	}
+
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.Alpha2)) {
-			transform.Find ("Character/M16").gameObject.SetActive (false);
-			transform.Find ("Character/Magnum").gameObject.SetActive (true);
+			SwitchWeapon (2);
 		}
 
 		if (Input.GetKeyDown (KeyCode.Alpha3)) {
-			transform.Find ("Character/Magnum").gameObject.SetActive (false);
-			transform.Find ("Character/M16").gameObject.SetActive (true);
+			SwitchWeapon (3);
 		}
+	}
+
+	void SwitchWeapon (int id) {
+
+		for (int i=1; i<=3; i++) {
+			weapon.Find ("W"+i).gameObject.SetActive (false);
+		}
+
+		weapon.Find ("W"+id).gameObject.SetActive (true);
 	}
 }

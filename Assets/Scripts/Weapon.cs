@@ -46,12 +46,12 @@ public class Weapon : MonoBehaviour {
 	
 	public bool AddBullet (int amt) {
 		bulletCount += amt;
-		if (bulletCount > bulletMaxCount) {
+		if (bulletCount >= bulletMaxCount) {
 			bulletCount = bulletMaxCount;
 			return true;
 		}
 
-		if (bulletCount <= 0) {
+		if (bulletCount < 0) {
 			bulletCount = 0;
 			GetComponent<WeaponSound> ().PlaySound ("NoAmmo");
 			return false;
