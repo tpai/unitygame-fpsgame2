@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerShoot : MonoBehaviour {
 
-	bool holdFire = false;
+	public bool holdFire = false;
 	bool isReloading = false;
 
 	void Start () {

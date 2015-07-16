@@ -12,12 +12,20 @@ public class PlayerAnim : MonoBehaviour {
 		}
 	}
 
-	void FixedUpdate () {
+	void Update () {
 		if (Input.GetButtonDown ("Fire2")) {
 			weaponAnim.SetBool ("Aim", true);
 		}
 		if (Input.GetButtonUp ("Fire2")) {
 			weaponAnim.SetBool ("Aim", false);
+		}
+
+		if (
+			!GetComponent<PlayerShoot> ().holdFire &&
+			weaponAnim.gameObject.GetComponent<Weapon> ().bulletCount > 0 &&
+			Input.GetButton ("Fire1")
+		) {
+			weaponAnim.SetTrigger ("Shoot");
 		}
 	}
 }
