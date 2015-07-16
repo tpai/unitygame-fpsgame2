@@ -27,5 +27,6 @@ public class Backpack : MonoBehaviour {
 		}
 
 		weapon.Find ("W"+id).gameObject.SetActive (true);
+		SendMessage ("BindAnim");
 	}
 }
