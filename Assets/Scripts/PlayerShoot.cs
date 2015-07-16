@@ -11,7 +11,10 @@ public class PlayerShoot : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (!holdFire && Input.GetButton ("Fire1")) {
+		if (
+			!GetComponent<PlayerAnim>().isSprinting &&
+			!GetComponent<PlayerAnim>().isReloading &&
+			!holdFire && Input.GetButton ("Fire1")) {
 			StartCoroutine ("Fire");
 		}
 

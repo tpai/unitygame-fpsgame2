@@ -3,8 +3,10 @@ using System.Collections;
 
 public class PlayerAnim : MonoBehaviour {
 
-	Animator cameraAnim;
+	public bool isSprinting = false;
+	public bool isReloading = false;
 	public Animator weaponAnim;
+	Animator cameraAnim;
 
 	void BindAnim () {
 		foreach (Transform weapon in transform.Find ("Character")) {
@@ -21,6 +23,8 @@ public class PlayerAnim : MonoBehaviour {
 		}
 
 		if (
+			!isSprinting &&
+			!isReloading &&
 			!GetComponent<PlayerShoot> ().holdFire &&
 			weaponAnim.gameObject.GetComponent<Weapon> ().bulletCount > 0 &&
 			Input.GetButton ("Fire1")
@@ -29,14 +33,22 @@ public class PlayerAnim : MonoBehaviour {
 		}
 
 		if (Input.GetKeyDown (KeyCode.R)) {
+			isReloading = true;
+			Invoke ("ReloadingEnd", 1f);
 			weaponAnim.SetTrigger ("Reload");
 		}
 
 		if (Input.GetKeyDown (KeyCode.LeftShift)) {
+			isSprinting = true;
 			weaponAnim.SetBool ("Sprint", true);
 		}
 		if (Input.GetKeyUp (KeyCode.LeftShift)) {
+			isSprinting = false;
 			weaponAnim.SetBool ("Sprint", false);
 		}
+	}
+
+	void ReloadingEnd () {
+		isReloading = false;
 	}
 }
