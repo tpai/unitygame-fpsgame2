@@ -26,7 +26,7 @@ public class PlayerAnim : MonoBehaviour {
 			!isSprinting &&
 			!isReloading &&
 			!GetComponent<PlayerShoot> ().holdFire &&
-			weaponAnim.gameObject.GetComponent<Weapon> ().bulletCount > 0 &&
+			GetComponentInChildren<Weapon> ().bulletCount > 0 &&
 			Input.GetButton ("Fire1")
 		) {
 			weaponAnim.SetTrigger ("Shoot");
@@ -34,7 +34,8 @@ public class PlayerAnim : MonoBehaviour {
 
 		if (Input.GetKeyDown (KeyCode.R)) {
 			isReloading = true;
-			Invoke ("ReloadingEnd", 1f);
+			GetComponentInChildren<Weapon> ().Reload ();
+			Invoke ("ReloadComplete", 1f);
 			weaponAnim.SetTrigger ("Reload");
 		}
 
@@ -48,7 +49,7 @@ public class PlayerAnim : MonoBehaviour {
 		}
 	}
 
-	void ReloadingEnd () {
+	void ReloadComplete () {
 		isReloading = false;
 	}
 }
