@@ -27,5 +27,16 @@ public class PlayerAnim : MonoBehaviour {
 		) {
 			weaponAnim.SetTrigger ("Shoot");
 		}
+
+		if (Input.GetKeyDown (KeyCode.R)) {
+			weaponAnim.SetTrigger ("Reload");
+		}
+
+		if (Input.GetKeyDown (KeyCode.LeftShift)) {
+			weaponAnim.SetBool ("Sprint", true);
+		}
+		if (Input.GetKeyUp (KeyCode.LeftShift)) {
+			weaponAnim.SetBool ("Sprint", false);
+		}
 	}
 }
