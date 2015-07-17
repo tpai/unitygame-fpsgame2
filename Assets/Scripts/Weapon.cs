@@ -27,8 +27,8 @@ public class Weapon : MonoBehaviour {
 		
 		Destroy (Instantiate (muzzleFlashPrefab, gunTop.position, Quaternion.FromToRotation (Vector3.forward, gunTop.forward)), .5f);
 		if (bulletShellPrefab != null)
-			Destroy (Instantiate (bulletShellPrefab, gunTop.position, Quaternion.identity), 2f);
-		
+			Destroy (Instantiate (bulletShellPrefab, gunTop.parent.position + Vector3.right * .1f, Quaternion.identity), 2f);
+
 		RaycastHit hit = new RaycastHit ();
 		Ray ray = new Ray (gunTop.position, gunTop.forward);
 		
@@ -45,7 +45,7 @@ public class Weapon : MonoBehaviour {
 
 	public void Reload () {
 		AddBullet (bulletMaxCount);
-		GetComponent<WeaponSound> ().PlaySound ("Reload");
+		SendMessage("PlaySound", "Reload");
 	}
 	
 	public bool AddBullet (int amt) {
@@ -57,7 +57,7 @@ public class Weapon : MonoBehaviour {
 
 		if (bulletCount < 0) {
 			bulletCount = 0;
-			GetComponent<WeaponSound> ().PlaySound ("NoAmmo");
+			SendMessage("PlaySound", "NoAmmo");
 			return false;
 		}
 

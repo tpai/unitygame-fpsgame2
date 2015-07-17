@@ -9,7 +9,7 @@ public class WeaponSound : MonoBehaviour {
 	public AudioClip reloadSound;
 	public AudioClip noAmmoSound;
 
-	void Start () {
+	void Awake () {
 		audioSource = GetComponent<AudioSource> ();
 	}
 
