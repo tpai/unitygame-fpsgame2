@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Backpack : MonoBehaviour {
+public class Backpack : PlayerBase {
 
 	Transform weapon;
 
@@ -27,6 +27,7 @@ public class Backpack : MonoBehaviour {
 		}
 
 		weapon.Find ("W"+id).gameObject.SetActive (true);
+
 		SendMessage ("BindAnim");
 	}
 }

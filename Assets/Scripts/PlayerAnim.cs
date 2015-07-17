@@ -1,17 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerAnim : MonoBehaviour {
-
+public class PlayerAnim : PlayerBase {
+	
 	public bool isSprinting = false;
 	public bool isReloading = false;
-	public Animator weaponAnim;
+
+	bool holdFire = false;
+
+	Animator weaponAnim;
 	Animator cameraAnim;
 
+	void Start () {
+		Cursor.visible = false;
+	}
+
 	void BindAnim () {
-		foreach (Transform weapon in transform.Find ("Character")) {
-			weaponAnim = weapon.GetComponentInChildren<Animator>();
-		}
+		Weapon = null;
+		weaponAnim = transform.Find ("Character").GetComponentInChildren<Animator>();
 	}
 
 	void Update () {
@@ -23,20 +29,20 @@ public class PlayerAnim : MonoBehaviour {
 		}
 
 		if (
+			!holdFire &&
 			!isSprinting &&
 			!isReloading &&
-			!GetComponent<PlayerShoot> ().holdFire &&
-			GetComponentInChildren<Weapon> ().bulletCount > 0 &&
 			Input.GetButton ("Fire1")
 		) {
-			weaponAnim.SetTrigger ("Shoot");
+			StartCoroutine ("Fire");
 		}
 
 		if (Input.GetKeyDown (KeyCode.R)) {
 			isReloading = true;
-			GetComponentInChildren<Weapon> ().Reload ();
-			Invoke ("ReloadComplete", 1f);
 			weaponAnim.SetTrigger ("Reload");
+
+			Weapon.Reload ();
+			Invoke ("ReloadComplete", 1f);
 		}
 
 		if (Input.GetKeyDown (KeyCode.LeftShift)) {
@@ -51,5 +57,12 @@ public class PlayerAnim : MonoBehaviour {
 
 	void ReloadComplete () {
 		isReloading = false;
+	}
+
+	IEnumerator Fire () {
+		holdFire = true;
+		if (Weapon.AddBullet (-1))weaponAnim.SetTrigger ("Shoot");
+		yield return new WaitForSeconds (Weapon.fireSpeed);
+		holdFire = false;
 	}
 }
