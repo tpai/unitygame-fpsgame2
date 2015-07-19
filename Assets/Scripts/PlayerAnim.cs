@@ -46,6 +46,7 @@ public class PlayerAnim : PlayerBase {
 
 		if (Input.GetKeyDown (KeyCode.LeftShift)) {
 			isSprinting = true;
+			weaponAnim.SetBool ("Aim", false);
 			weaponAnim.SetBool ("Sprint", true);
 		}
 		if (Input.GetKeyUp (KeyCode.LeftShift)) {
