@@ -21,10 +21,10 @@ public class PlayerAnim : PlayerBase {
 	}
 
 	void Update () {
-		if (Input.GetButtonDown ("Fire2")) {
+		if (!Weapon.meleeWeapon && Input.GetButtonDown ("Fire2")) {
 			weaponAnim.SetBool ("Aim", true);
 		}
-		if (Input.GetButtonUp ("Fire2")) {
+		if (!Weapon.meleeWeapon && Input.GetButtonUp ("Fire2")) {
 			weaponAnim.SetBool ("Aim", false);
 		}
 
@@ -37,10 +37,9 @@ public class PlayerAnim : PlayerBase {
 			StartCoroutine ("Fire");
 		}
 
-		if (Input.GetKeyDown (KeyCode.R)) {
+		if (!Weapon.meleeWeapon && Input.GetKeyDown (KeyCode.R)) {
 			isReloading = true;
 			weaponAnim.SetTrigger ("Reload");
-
 			Weapon.Reload ();
 			Invoke ("ReloadComplete", 1f);
 		}

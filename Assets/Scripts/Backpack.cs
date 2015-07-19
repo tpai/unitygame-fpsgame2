@@ -11,6 +11,10 @@ public class Backpack : PlayerBase {
 	}
 
 	void Update () {
+		if (Input.GetKeyDown (KeyCode.Alpha1)) {
+			SwitchWeapon (1);
+		}
+
 		if (Input.GetKeyDown (KeyCode.Alpha2)) {
 			SwitchWeapon (2);
 		}
