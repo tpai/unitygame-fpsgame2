@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 using System.Collections;
 
 public class PlayerAnim : PlayerBase {
@@ -44,12 +45,19 @@ public class PlayerAnim : PlayerBase {
 			Invoke ("ReloadComplete", 1f);
 		}
 
-		if (Input.GetKeyDown (KeyCode.LeftShift)) {
+		if (Input.GetKey (KeyCode.LeftShift)) {
 			isSprinting = true;
 			weaponAnim.SetBool ("Aim", false);
 			weaponAnim.SetBool ("Sprint", true);
 		}
-		if (Input.GetKeyUp (KeyCode.LeftShift)) {
+		if (isSprinting && (
+				Input.GetKeyUp (KeyCode.LeftShift) || 
+			    (
+					CrossPlatformInputManager.GetAxis("Horizontal") == 0f &&
+			    	CrossPlatformInputManager.GetAxis("Vertical") == 0f
+				)
+			)
+		) {
 			isSprinting = false;
 			weaponAnim.SetBool ("Sprint", false);
 		}
