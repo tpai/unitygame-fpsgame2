@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 using System.Collections;
 
 public class Weapon : MonoBehaviour {
@@ -50,7 +51,7 @@ public class Weapon : MonoBehaviour {
 
 	void RayShoot () {
 		Ray ray = new Ray (gunTop.position, gunTop.forward);
-		RaycastHit[] hits = Physics.RaycastAll(ray, fireRange);
+		RaycastHit[] hits = Physics.RaycastAll(ray, fireRange).OrderBy(h=>h.distance).ToArray();
 
 		foreach (RaycastHit hit in hits) {
 			if (hit.collider.tag == "Wall" || hit.collider.tag == "Ground") {
