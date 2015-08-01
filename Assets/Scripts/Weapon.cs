@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Linq;
 using System.Collections;
 
-public class Weapon : MonoBehaviour {
+public class Weapon : PlayerBase {
 
 	Transform gunTop;
 
@@ -13,13 +14,24 @@ public class Weapon : MonoBehaviour {
 	public GameObject muzzleFlashPrefab;
 	public GameObject bulletShellPrefab;
 
+	public int fireDamage = 15;
 	public float fireSpeed = .1f;
 	public float fireRange = 100f;
-	public int bulletCount;
+	public int bulletCount = 30;
 	public int bulletMaxCount = 30;
+	
+	Text ammoText;
+
+	void OnEnable () {
+		ammoText = GameObject.Find ("AmmoText").GetComponent<Text> ();
+		ammoText.text = bulletCount.ToString ();
+	}
+
+	void Awake () {
+		bulletCount = bulletMaxCount;
+	}
 
 	void Start () {
-		bulletCount = bulletMaxCount;
 		gunTop = transform.Find ("GunTop");
 	}
 
@@ -54,13 +66,19 @@ public class Weapon : MonoBehaviour {
 		RaycastHit[] hits = Physics.RaycastAll(ray, fireRange).OrderBy(h=>h.distance).ToArray();
 
 		foreach (RaycastHit hit in hits) {
+
 			if (hit.collider.tag == "Wall" || hit.collider.tag == "Ground") {
 				Destroy (Instantiate (bulletHitPrefab, hit.point, Quaternion.FromToRotation (hit.collider.transform.forward, hit.normal)), 2f);
 				break;
 			}
 			
-			if (hit.collider.tag == "Enemy") {
+			if (hit.collider.tag == "Barrel") {
 				hit.collider.SendMessage ("Broken", hit.point);
+				break;
+			}
+
+			if (hit.collider.tag == "Enemy") {
+				PlayerSyncShoot.CmdTellServerWhoWasShot (hit.collider.name, fireDamage);
 				break;
 			}
 		}
@@ -76,17 +94,21 @@ public class Weapon : MonoBehaviour {
 			bulletCount += amt;
 			if (bulletCount >= bulletMaxCount) {
 				bulletCount = bulletMaxCount;
+				ammoText.text = bulletCount.ToString ();
 				return true;
 			}
 			if (bulletCount < 0) {
 				bulletCount = 0;
+				ammoText.text = bulletCount.ToString ();
 				SendMessage ("PlaySound", "NoAmmo");
 				return false;
 			}
+			ammoText.text = bulletCount.ToString ();
 			SendMessage ("PlaySound", "Bullet");
 			GunAttack ();
 		}
 		else {
+			ammoText.text = "99";
 			SendMessage ("PlaySound", "Bullet");
 			KnifeAttack ();
 		}

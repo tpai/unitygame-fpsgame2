@@ -52,10 +52,12 @@ public class PlayerNetworkSetup : NetworkBehaviour {
 		if (isLocalPlayer) {
 			// turn off scene camera
 			GameObject.Find ("SceneCamera").SetActive (false);
+			GameObject.Find ("PlayerHUD").GetComponent<Canvas> ().enabled = true;
 			// turn character on
 			fpsCamera.enabled = true;
 			audioListener.enabled = true;
-			GetComponent <CharacterController>().enabled = true;
+			GetComponent <PlayerAnim> ().enabled = true;
+//			GetComponent <CharacterController>().enabled = true;
 			GetComponent <UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = true;
 		}
 	}

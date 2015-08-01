@@ -35,4 +35,16 @@ public class PlayerBase : MonoBehaviour {
 			m_Weapon = value;
 		}
 	}
+
+	// ===== Network =====
+
+	PlayerSyncShoot m_PlayerSyncShoot;
+	public PlayerSyncShoot PlayerSyncShoot {
+		get {
+			if (m_PlayerSyncShoot == null) {
+				m_PlayerSyncShoot = GetComponentInParent <PlayerSyncShoot> ();
+			}
+			return m_PlayerSyncShoot;
+		}
+	}
 }
