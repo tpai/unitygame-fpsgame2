@@ -9,9 +9,31 @@ public class PlayerHP : NetworkBehaviour {
 	int maxHP = 100;
 	Text hpText;
 
+	private bool shouldDie = false;
+	public bool isDead = false;
+
+	public delegate void DieDelegate ();
+	public event DieDelegate EventDie;
+
 	void Start () {
 		nowHP = maxHP;
 		SetHealthText ();
+	}
+
+	void Update () {
+		CheckCondition ();
+	}
+
+	void CheckCondition () {
+		if (!shouldDie && !isDead && nowHP <= 0)
+			shouldDie = true;
+
+		if (shouldDie && nowHP <= 0) {
+			if (EventDie != null) {
+				EventDie ();
+			}
+			shouldDie = false;
+		}
 	}
 
 	public void AddHP (int amt) {

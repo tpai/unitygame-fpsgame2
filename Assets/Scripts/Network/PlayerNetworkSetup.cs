@@ -51,7 +51,7 @@ public class PlayerNetworkSetup : NetworkBehaviour {
 	void Start () {
 		if (isLocalPlayer) {
 			// turn off scene camera
-			GameObject.Find ("SceneCamera").SetActive (false);
+			GameObject.Find ("SceneCamera").GetComponent<Camera>().enabled = false;
 			GameObject.Find ("PlayerHUD").GetComponent<Canvas> ().enabled = true;
 			// turn character on
 			fpsCamera.enabled = true;
