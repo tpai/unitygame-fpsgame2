@@ -28,8 +28,6 @@ public class PlayerSyncDeath : NetworkBehaviour {
 
 		if (isLocalPlayer) {
 			GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController> ().enabled = !b;
-			GetComponent<CharacterController> ().enabled = !b;
-			GetComponent<CapsuleCollider> ().enabled = !b;
 			GetComponentInChildren<Camera>().enabled = !b;
 			GameObject.Find ("PlayerHUD").GetComponent<Canvas>().enabled = !b;
 			GameObject.Find ("SceneCamera").GetComponent<Camera>().enabled = b;

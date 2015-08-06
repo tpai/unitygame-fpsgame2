@@ -57,7 +57,6 @@ public class PlayerNetworkSetup : NetworkBehaviour {
 			fpsCamera.enabled = true;
 			audioListener.enabled = true;
 			GetComponent <PlayerAnim> ().enabled = true;
-//			GetComponent <CharacterController>().enabled = true;
 			GetComponent <UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = true;
 		}
 	}
