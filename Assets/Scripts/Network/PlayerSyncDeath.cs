@@ -21,14 +21,15 @@ public class PlayerSyncDeath : NetworkBehaviour {
 	}
 
 	void DisablePlayer (bool b) {
+
 		ShowPlayer (!b);
 
-		hpScript.isDead = b;
 		GetComponentInChildren<Weapon> ().enabled = !b;
 
 		if (isLocalPlayer) {
 			GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController> ().enabled = !b;
 			GetComponent<CharacterController> ().enabled = !b;
+			GetComponent<CapsuleCollider> ().enabled = !b;
 			GetComponentInChildren<Camera>().enabled = !b;
 			GameObject.Find ("PlayerHUD").GetComponent<Canvas>().enabled = !b;
 			GameObject.Find ("SceneCamera").GetComponent<Camera>().enabled = b;
@@ -40,11 +41,11 @@ public class PlayerSyncDeath : NetworkBehaviour {
 		}
 	}
 
-	void ShowPlayer (bool show) {
+	void ShowPlayer (bool b) {
 		foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer> ())
-			renderer.enabled = show;
+			renderer.enabled = b;
 
 		foreach (SkinnedMeshRenderer renderer in GetComponentsInChildren<SkinnedMeshRenderer> ())
-			renderer.enabled = show;
+			renderer.enabled = b;
 	}
 }
