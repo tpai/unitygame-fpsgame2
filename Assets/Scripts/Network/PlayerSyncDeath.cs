@@ -8,20 +8,35 @@ public class PlayerSyncDeath : NetworkBehaviour {
 
 	void Start () {
 		hpScript = GetComponent<PlayerHP> ();
-		hpScript.EventDie += DisablePlayer;
+		hpScript.EventDie += DisablePlayerNow;
+		hpScript.EventRespawn += EnablePlayerNow;
 	}
 
-	void DisablePlayer () {
-		ShowPlayer (false);
+	void EnablePlayerNow () {
+		DisablePlayer (false);
+	}
 
-		hpScript.isDead = true;
-		GetComponentInChildren<Weapon> ().enabled = false;
+	void DisablePlayerNow () {
+		DisablePlayer (true);
+	}
+
+	void DisablePlayer (bool b) {
+		ShowPlayer (!b);
+
+		hpScript.isDead = b;
+		GetComponentInChildren<Weapon> ().enabled = !b;
 
 		if (isLocalPlayer) {
-			GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController> ().enabled = false;
-			GetComponent<CharacterController> ().enabled = false;
-			GetComponentInChildren<Camera>().enabled = false;
-			GameObject.Find ("SceneCamera").GetComponent<Camera>().enabled = true;
+			GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController> ().enabled = !b;
+			GetComponent<CharacterController> ().enabled = !b;
+			GetComponentInChildren<Camera>().enabled = !b;
+			GameObject.Find ("PlayerHUD").GetComponent<Canvas>().enabled = !b;
+			GameObject.Find ("SceneCamera").GetComponent<Camera>().enabled = b;
+		}
+
+		if (b) {
+			NetworkStartPosition[] points = GameObject.Find ("SpawnPoints").GetComponentsInChildren<NetworkStartPosition> ();
+			transform.position = points[Random.Range (0, points.Length)].transform.position;
 		}
 	}
 

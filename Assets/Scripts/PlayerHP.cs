@@ -9,31 +9,9 @@ public class PlayerHP : NetworkBehaviour {
 	int maxHP = 100;
 	Text hpText;
 
-	private bool shouldDie = false;
-	public bool isDead = false;
-
-	public delegate void DieDelegate ();
-	public event DieDelegate EventDie;
-
 	void Start () {
 		nowHP = maxHP;
 		SetHealthText ();
-	}
-
-	void Update () {
-		CheckCondition ();
-	}
-
-	void CheckCondition () {
-		if (!shouldDie && !isDead && nowHP <= 0)
-			shouldDie = true;
-
-		if (shouldDie && nowHP <= 0) {
-			if (EventDie != null) {
-				EventDie ();
-			}
-			shouldDie = false;
-		}
 	}
 
 	public void AddHP (int amt) {
@@ -56,5 +34,44 @@ public class PlayerHP : NetworkBehaviour {
 
 		if (isLocalPlayer)
 			hpText.text = nowHP.ToString ();
+	}
+
+	private bool shouldDie = false;
+	public bool isDead = false;
+	
+	public delegate void DieDelegate ();
+	public event DieDelegate EventDie;
+
+	public delegate void RespawnDelegate ();
+	public event RespawnDelegate EventRespawn;
+	
+	void Update () {
+		CheckCondition ();
+	}
+	
+	void CheckCondition () {
+		if (!shouldDie && !isDead && nowHP <= 0)
+			shouldDie = true;
+		
+		if (shouldDie && nowHP <= 0) {
+			if (EventDie != null) {
+				EventDie ();
+			}
+			isDead = true;
+			shouldDie = false;
+
+			Invoke ("ResetHealth", 3f);
+		}
+		 
+		if (isDead && nowHP > 0) {
+			if (EventRespawn != null) {
+				EventRespawn ();
+			}
+			isDead = false;
+		}
+	}
+
+	public void ResetHealth () {
+		nowHP = maxHP;
 	}
 }
