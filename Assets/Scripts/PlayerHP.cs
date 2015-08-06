@@ -50,15 +50,11 @@ public class PlayerHP : NetworkBehaviour {
 	}
 	
 	void CheckCondition () {
-		if (!shouldDie && !isDead && nowHP <= 0)
-			shouldDie = true;
-		
-		if (shouldDie && nowHP <= 0) {
+		if (!isDead && nowHP <= 0) {
 			if (EventDie != null) {
 				EventDie ();
 			}
 			isDead = true;
-			shouldDie = false;
 
 			Invoke ("ResetHealth", 3f);
 		}
