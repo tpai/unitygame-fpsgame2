@@ -4,10 +4,10 @@ using System.Collections;
 
 public class PlayerSyncDeath : NetworkBehaviour {
 
-	PlayerHP hpScript;
+	HP hpScript;
 
 	void Start () {
-		hpScript = GetComponent<PlayerHP> ();
+		hpScript = GetComponent<HP> ();
 		hpScript.EventDie += DisablePlayerNow;
 		hpScript.EventRespawn += EnablePlayerNow;
 	}
@@ -33,7 +33,7 @@ public class PlayerSyncDeath : NetworkBehaviour {
 			GameObject.Find ("SceneCamera").GetComponent<Camera>().enabled = b;
 		}
 
-		if (b) {
+		if (!b) {
 			NetworkStartPosition[] points = GameObject.Find ("SpawnPoints").GetComponentsInChildren<NetworkStartPosition> ();
 			transform.position = points[Random.Range (0, points.Length)].transform.position;
 		}

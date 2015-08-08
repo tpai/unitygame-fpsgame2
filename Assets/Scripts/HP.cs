@@ -3,10 +3,10 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
 
-public class PlayerHP : NetworkBehaviour {
+public class HP : NetworkBehaviour {
 
 	[SyncVar (hook="OnHPChanged")] public int nowHP;
-	int maxHP = 100;
+	public int maxHP = 100;
 	Text hpText;
 
 	void Start () {
@@ -25,6 +25,10 @@ public class PlayerHP : NetworkBehaviour {
 
 	void OnHPChanged (int hp) {
 		nowHP = hp;
+
+		if (transform.tag != "Player")
+			return;
+
 		SetHealthText ();
 	}
 
@@ -36,7 +40,6 @@ public class PlayerHP : NetworkBehaviour {
 			hpText.text = nowHP.ToString ();
 	}
 
-	private bool shouldDie = false;
 	public bool isDead = false;
 	
 	public delegate void DieDelegate ();
@@ -51,19 +54,28 @@ public class PlayerHP : NetworkBehaviour {
 	
 	void CheckCondition () {
 		if (!isDead && nowHP <= 0) {
+			isDead = true;
+
+			if (transform.tag == "Bot") {
+				Destroy (gameObject);
+				return ;
+			}
+
 			if (EventDie != null) {
 				EventDie ();
 			}
-			isDead = true;
 
 			Invoke ("ResetHealth", 3f);
 		}
 		 
 		if (isDead && nowHP > 0) {
+			isDead = false;
+
+			if (transform.tag == "Bot")return ;
+
 			if (EventRespawn != null) {
 				EventRespawn ();
 			}
-			isDead = false;
 		}
 	}
 

@@ -77,7 +77,7 @@ public class Weapon : PlayerBase {
 				break;
 			}
 
-			if (hit.collider.tag == "Enemy") {
+			if (hit.collider.tag == "Enemy" || hit.collider.tag == "Bot") {
 				PlayerSyncShoot.CmdTellServerWhoWasShot (hit.collider.name, fireDamage);
 				break;
 			}

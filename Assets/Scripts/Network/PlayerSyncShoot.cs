@@ -7,6 +7,6 @@ public class PlayerSyncShoot : NetworkBehaviour {
 	[Command]
 	public void CmdTellServerWhoWasShot (string uniqueID, int damage) {
 		GameObject go = GameObject.Find (uniqueID);
-		go.GetComponent<PlayerHP> ().AddHP (-damage);
+		go.GetComponent<HP> ().AddHP (-damage);
 	}
 }

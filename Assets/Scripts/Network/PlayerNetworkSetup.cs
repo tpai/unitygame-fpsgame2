@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 
 public class PlayerNetworkSetup : NetworkBehaviour {
 
-	[SyncVar] public string playerUniqueName;
+	[SyncVar] public string playerID;
 	private NetworkInstanceId playerNetID;
 	private Transform myTransform;
 
@@ -23,7 +23,7 @@ public class PlayerNetworkSetup : NetworkBehaviour {
 	[Client]
 	void SetIdentity () {
 		if (!isLocalPlayer) {
-			myTransform.name = playerUniqueName;
+			myTransform.name = playerID;
 			myTransform.tag = "Enemy";
 		} else {
 			myTransform.name = "Player " + playerNetID.ToString ();
@@ -32,7 +32,7 @@ public class PlayerNetworkSetup : NetworkBehaviour {
 
 	[Command]
 	void CmdTellServerMyIdentity (string identity) {
-		playerUniqueName = identity;
+		playerID = identity;
 	}
 
 	void Update () {

@@ -50,21 +50,18 @@ public class PlayerSyncTransform : NetworkBehaviour {
 				Vector3.Distance (myTransform.position, lastPos) > posThreshold ||
 				Quaternion.Angle (myTransform.rotation, lastMyRot) > rotThreshold ||
 				Quaternion.Angle (camTransform.rotation, lastCamRot) > rotThreshold
-				) {
-				CmdProvidePosRotToServer (myTransform.position, myTransform.rotation, camTransform.rotation);
+			) {
 				lastPos = myTransform.position;
 				lastMyRot = myTransform.rotation;
 				lastCamRot = camTransform.rotation;
+
+				syncPos = lastPos;
+				syncMyRot = lastMyRot;
+				syncCamRot = lastCamRot;
 			}
 		}
 	}
-	
-	[Command]
-	void CmdProvidePosRotToServer (Vector3 pos, Quaternion charRot, Quaternion camRot) {
-		syncPos = pos;
-		syncMyRot = charRot;
-		syncCamRot = camRot;
-	}
+
 
 	void LerpPosRot () {
 		if (!isLocalPlayer) {
