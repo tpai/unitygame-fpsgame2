@@ -45,6 +45,9 @@ public class ZombieMovement : NetworkBehaviour {
 	}
 
 	void MoveToTarget () {
+		if (!navAgent.enabled)
+			return;
+
 		if (isServer && targetTransform != null) {
 			navAgent.SetDestination (Vector3.MoveTowards(targetTransform.position, myTransform.position, 1.5f));
 			transform.LookAt (targetTransform.position);
